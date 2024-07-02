@@ -1,0 +1,59 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Employee {
+  address                             String?
+  cadre                               String?
+  createdAt                           DateTime            @default(now())
+  dateOfAppointmentInTheGazettedGrade DateTime?
+  dateOfAppointmentToThePresentPost   DateTime?
+  dateOfBirth                         DateTime?
+  dateOfInitialAppointment            DateTime?
+  dateOfRetirement                    DateTime?
+  department                          String?
+  email                               String?
+  fatherSName                         String?
+  gender                              EnumEmployeeGender?
+  id                                  String              @id @default(cuid())
+  mobileNumber                        String?
+  name                                String?
+  presentDesignation                  String?
+  promotions                          Promotion[]
+  totalLengthOfService                Int?
+  transfers                           Transfer[]
+  updatedAt                           DateTime            @updatedAt
+}
+
+model Promotion {
+  createdAt        DateTime  @default(now())
+  employee         Employee? @relation(fields: [employeeId], references: [id])
+  employeeId       String?
+  id               String    @id @default(cuid())
+  officeOrder      String?
+  promotionDate    DateTime?
+  promotionDetails String?
+  updatedAt        DateTime  @updatedAt
+}
+
+model Transfer {
+  createdAt     DateTime  @default(now())
+  details       String?
+  employee      Employee? @relation(fields: [employeeId], references: [id])
+  employeeId    String?
+  fromLocation  String?
+  id            String    @id @default(cuid())
+  toLocation    String?
+  transferDate  DateTime?
+  transferOrder String?
+  updatedAt     DateTime  @updatedAt
+}
+
+enum EnumEmployeeGender {
+  Option1
+}
